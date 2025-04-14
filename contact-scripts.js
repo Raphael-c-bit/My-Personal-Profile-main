@@ -1,52 +1,39 @@
-const mobileMenuButton = document.getElementById('mobile-menu-button');
-const mobileMenu = document.getElementById('mobile-menu');
+// Toggle mobile menu
+document.addEventListener('DOMContentLoaded', function() {
+  const mobileMenuButton = document.getElementById('mobile-menu-button');
+  const mobileMenu = document.getElementById('mobile-menu');
 
-mobileMenuButton.addEventListener('click', () => {
-  mobileMenu.classList.toggle('hidden');
-});
-
-// Contact form validation
-document.addEventListener("DOMContentLoaded", () => {
-  const form = document.getElementById("contactForm");
-  const nameInput = document.getElementById("name");
-  const emailInput = document.getElementById("email");
-  const messageInput = document.getElementById("message");
-  const submitBtn = document.getElementById("submitBtn");
-  const feedback = document.getElementById("formFeedback");
-
-  const isValidEmail = (email) => {
-    const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    return emailRegex.test(email);
-  };
-
-  submitBtn.addEventListener("click", () => {
-    const name = nameInput.value.trim();
-    const email = emailInput.value.trim();
-    const message = messageInput.value.trim();
-
-    if (!name) {
-      feedback.textContent = "Please enter your name.";
-      feedback.className = "text-red-500";
-      return;
-    }
-    if (!email || !isValidEmail(email)) {
-      feedback.textContent = "Please enter a valid email address.";
-      feedback.className = "text-red-500";
-      return;
-    }
-    if (!message) {
-      feedback.textContent = "Please enter a message.";
-      feedback.className = "text-red-500";
-      return;
-    }
+  mobileMenuButton.addEventListener('click', function() {
+    // Toggle the 'hidden' class on the mobile menu
+    mobileMenu.classList.toggle('hidden');
     
-    feedback.textContent = "Message sent successfully!";
-    feedback.className = "text-green-500";
+    // Change the hamburger icon to X when menu is open
+    const isOpen = !mobileMenu.classList.contains('hidden');
+    if (isOpen) {
+      mobileMenuButton.innerHTML = `
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M6 18L18 6M6 6l12 12"></path>
+        </svg>
+      `;
+    } else {
+      mobileMenuButton.innerHTML = `
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      `;
+    }
+  });
 
-    nameInput.value = "";
-    emailInput.value = "";
-    messageInput.value = "";
-
-    console.log("Form Submitted:", { name, email, message });
+  // Close menu when clicking on a link (for single page applications)
+  const mobileLinks = mobileMenu.querySelectorAll('a');
+  mobileLinks.forEach(link => {
+    link.addEventListener('click', function() {
+      mobileMenu.classList.add('hidden');
+      mobileMenuButton.innerHTML = `
+        <svg class="w-6 h-6" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M4 6h16M4 12h16M4 18h16"></path>
+        </svg>
+      `;
+    });
   });
 });
